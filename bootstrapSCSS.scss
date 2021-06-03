@@ -1,0 +1,116 @@
+// Variables
+$textDark: #1b1b1b;
+$textLight: #ffffff;
+
+$btn-font: sans-serif;
+$btn-font-wt: 300;
+$btn-margin: 0.3rem;
+$btn-padding: 0.5rem 1rem;
+$btn-border: none;
+$btn-border-radius: 0.5rem;
+
+$btn-transition: color 0.09s ease-in-out, background-color 0.09s ease-in-out,
+	border-color 0.09s ease-in-out, box-shadow 0.05s ease-in;
+
+// Creates theme maps
+$theme: (
+	primary: #2f90eb,
+	secondary: #5c6a74,
+	success: #2c8f55,
+	danger: #cf1f3d,
+	warning: #ffc917,
+	info: #17c9ff,
+	light: #f6fdff,
+	dark: #2b2b2b,
+);
+
+// Creates font pairing for each theme
+$fontPairing: (
+	#2f90eb: $textLight,
+	#5c6a74: $textLight,
+	#2c8f55: $textLight,
+	#cf1f3d: $textLight,
+	#ffc917: $textDark,
+	#17c9ff: $textDark,
+	#f6fdff: $textDark,
+	#2b2b2b: $textLight,
+);
+
+// Mixin for generating default theme modifiers with hover effect
+@mixin palette-default {
+	@each $name, $color in $theme {
+		&--#{$name} {
+			background-color: $color;
+			color: map-get($fontPairing, $color);
+
+			&:hover {
+				background-color: $color + 15%;
+			}
+
+			&:focus {
+				box-shadow: 0 0 1px 3px rgba($color - 10%, 0.5);
+			}
+		}
+	}
+}
+
+// Mixin for generating outline theme modifiers with hover effect
+@mixin palette-outline {
+	@each $name, $color in $theme {
+		&--#{$name} {
+			background-color: transparent;
+			border: 1px solid $color;
+			color: $color;
+
+			&:hover {
+				background-color: $color;
+				color: map-get($fontPairing, $color);
+			}
+
+			&:focus {
+				box-shadow: 0 0 1px 3px rgba($color - 10%, 0.5);
+			}
+		}
+	}
+}
+
+// Mixin for size-modifier generation
+@mixin size-modifiers($sml: 0.5rem, $md: 1rem, $lg: 1.5rem) {
+	font-size: $md;
+
+	&--sml {
+		font-size: $sml;
+	}
+	&--md {
+		font-size: $md;
+	}
+	&--lg {
+		font-size: $lg;
+	}
+}
+
+// Base button template
+%base-btn {
+	font-family: $btn-font;
+	font-weight: $btn-font-wt;
+	margin: $btn-margin;
+	padding: $btn-padding;
+	border: $btn-border;
+	border-radius: $btn-border-radius;
+	transition: $btn-transition;
+	cursor: pointer;
+}
+
+// SCSS
+
+.btn {
+	@extend %base-btn;
+
+	@include size-modifiers();
+
+	@include palette-default;
+
+	&-outline {
+		@include palette-outline;
+	}
+}
